@@ -1,0 +1,393 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Spice &amp; Soul | Fine Indian Dining</title>
+<meta name="color-scheme" content="dark">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#0c0907;--bg2:#15100c;--card:#1c1510;--gold:#d4a655;--gold2:#f0d28a;--cream:#f6ecd9;--mute:#b6a58c;--line:rgba(212,166,85,.2);--serif:'Cormorant Garamond',Georgia,serif;--sans:'Inter',system-ui,sans-serif;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+*,*::before,*::after{box-sizing:inherit}
+html{scroll-behavior:smooth;scroll-padding-top:84px}
+body{margin:0;background:var(--bg);color:var(--cream);font:400 16px/1.7 var(--sans);overflow-x:hidden}
+img,svg{max-width:100%}
+a{color:inherit;text-decoration:none}
+h1,h2,h3{font-family:var(--serif);font-weight:600;line-height:1.1;margin:0}
+.wrap{max-width:1180px;margin:0 auto;padding:0 24px}
+section{padding:110px 0}
+.eyebrow{color:var(--gold);letter-spacing:.3em;text-transform:uppercase;font-size:.75rem;font-weight:600}
+.title{font-size:clamp(2.2rem,5vw,3.6rem);margin:12px 0 16px}
+.lead{color:var(--mute);max-width:560px}
+.center{text-align:center}.center .lead{margin:0 auto}
+:focus-visible{outline:2px solid var(--gold2);outline-offset:3px}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:14px 30px;border-radius:999px;font:600 .95rem var(--sans);border:1px solid var(--gold);cursor:pointer;transition:.3s;background:transparent;color:var(--cream)}
+.btn.pri{background:linear-gradient(135deg,var(--gold2),var(--gold));color:#1a1108;border-color:transparent}
+.btn:hover{transform:translateY(-3px);box-shadow:0 12px 30px rgba(212,166,85,.25)}
+.btn.ghost:hover{background:rgba(212,166,85,.12)}
+.btn[disabled]{opacity:.7;cursor:progress;transform:none}
+/* loader */
+#loader{position:fixed;inset:0;background:var(--bg);display:grid;place-items:center;z-index:100;transition:opacity .7s,visibility .7s}
+#loader.done{opacity:0;visibility:hidden}
+#loader span{font:600 2rem var(--serif);color:var(--gold);letter-spacing:.2em;animation:pulse 1.2s infinite}
+@keyframes pulse{50%{opacity:.35}}
+/* nav */
+nav{position:fixed;top:0;left:0;right:0;z-index:50;padding:calc(18px + env(safe-area-inset-top,0px)) 0 18px;transition:.4s}
+nav.solid{background:rgba(12,9,7,.78);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);padding-top:calc(10px + env(safe-area-inset-top,0px));padding-bottom:10px;border-bottom:1px solid var(--line)}
+nav .wrap{display:flex;align-items:center;justify-content:space-between}
+.logo{font:700 1.7rem var(--serif);color:var(--cream)}.logo b{color:var(--gold);font-style:italic;font-weight:600}
+.links{display:flex;gap:30px;align-items:center}
+.links a{font-size:.88rem;color:var(--mute);position:relative;transition:.3s}
+.links a::after{content:"";position:absolute;left:0;bottom:-6px;height:1px;width:0;background:var(--gold);transition:.3s}
+.links a:hover,.links a.on{color:var(--cream)}.links a:hover::after,.links a.on::after{width:100%}
+.burger{display:none;background:none;border:1px solid var(--line);color:var(--cream);width:44px;height:44px;border-radius:12px;cursor:pointer;font-size:1.3rem}
+/* hero */
+.hero{min-height:100svh;display:grid;place-items:center;text-align:center;position:relative;overflow:hidden;padding:120px 0 80px;background:radial-gradient(ellipse at 50% 120%,#5a2a0e 0,transparent 60%),radial-gradient(circle at 20% 20%,#2b1608,transparent 50%),var(--bg)}
+.orb{position:absolute;border-radius:50%;filter:blur(70px);opacity:.35;will-change:transform}
+.hero .wrap{position:relative;z-index:2}
+.hero h1{font-size:clamp(2.8rem,8vw,6rem);margin:20px auto;max-width:900px}
+.hero h1 em{color:var(--gold);font-weight:500}
+.hero p{max-width:560px;margin:0 auto 38px;color:var(--mute);font-size:1.1rem}
+.cta{display:flex;gap:16px;justify-content:center;flex-wrap:wrap}
+.rise{opacity:0;transform:translateY(28px);animation:rise .9s forwards cubic-bezier(.2,.7,.2,1)}
+@keyframes rise{to{opacity:1;transform:none}}
+.scroll{position:absolute;bottom:28px;left:50%;width:22px;height:36px;border:1px solid var(--gold);border-radius:12px;translate:-50% 0}
+.scroll::after{content:"";position:absolute;top:6px;left:50%;width:3px;height:7px;background:var(--gold);border-radius:3px;translate:-50% 0;animation:dot 1.6s infinite}
+@keyframes dot{to{transform:translateY(12px);opacity:0}}
+/* reveal */
+.rv{opacity:0;transform:translateY(34px);transition:opacity .8s,transform .8s cubic-bezier(.2,.7,.2,1)}
+.rv.in{opacity:1;transform:none}
+/* art tiles (food imagery drawn in CSS) */
+.art{position:relative;display:grid;place-items:center;overflow:hidden;background:var(--g);isolation:isolate}
+.art::before{content:"";position:absolute;inset:0;background:radial-gradient(circle at 30% 25%,rgba(255,255,255,.22),transparent 45%),radial-gradient(circle at 50% 110%,rgba(0,0,0,.5),transparent 60%);z-index:-1}
+.art i{font-style:normal;font-size:var(--s,4.5rem);filter:drop-shadow(0 12px 18px rgba(0,0,0,.5));transition:transform .7s cubic-bezier(.2,.7,.2,1)}
+.zoom:hover .art i,.zoom:hover.art i{transform:scale(1.18) rotate(-4deg)}
+/* about */
+.about{display:grid;grid-template-columns:1fr 1fr;gap:64px;align-items:center}
+.about .art{aspect-ratio:4/5;border-radius:28px;box-shadow:0 30px 60px rgba(0,0,0,.5);--s:8rem}
+.chef{position:absolute;right:-18px;bottom:30px;padding:14px 20px;border-radius:18px;background:rgba(28,21,16,.65);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border:1px solid var(--line);font-size:.85rem}
+.chef b{display:block;font:600 1.2rem var(--serif);color:var(--gold2)}
+.pillars{display:grid;gap:16px;margin:28px 0}
+.pillars div{padding-left:18px;border-left:2px solid var(--gold)}.pillars b{display:block}.pillars span{color:var(--mute);font-size:.92rem}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:20px}
+.stat{padding:22px 12px;border-radius:20px;background:var(--card);border:1px solid var(--line);text-align:center}
+.stat b{font:600 2.4rem var(--serif);color:var(--gold)}.stat span{display:block;font-size:.8rem;color:var(--mute)}
+/* menu */
+#menu{background:var(--bg2)}
+.tabs{display:flex;gap:10px;flex-wrap:wrap;justify-content:center;margin:36px 0 44px}
+.tab{padding:10px 22px;border-radius:999px;border:1px solid var(--line);background:transparent;color:var(--mute);cursor:pointer;font:500 .88rem var(--sans);transition:.3s}
+.tab:hover{color:var(--cream);border-color:var(--gold)}
+.tab[aria-pressed=true]{background:var(--gold);color:#1a1108;border-color:var(--gold)}
+.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:26px}
+.card{border-radius:24px;background:var(--card);border:1px solid var(--line);overflow:hidden;transition:.4s;animation:rise .6s both}
+.card:hover{transform:translateY(-8px);box-shadow:0 26px 50px rgba(0,0,0,.5);border-color:var(--gold)}
+.card .art{height:200px}
+.card .bd{padding:22px}
+.card .cat{font-size:.7rem;letter-spacing:.2em;text-transform:uppercase;color:var(--gold)}
+.card .row{display:flex;justify-content:space-between;gap:12px;align-items:baseline;margin:6px 0}
+.card h3{font-size:1.5rem}.price{font:600 1.3rem var(--serif);color:var(--gold2);white-space:nowrap}
+.card p{margin:0;color:var(--mute);font-size:.9rem}
+.more{text-align:center;margin-top:46px}
+/* signature */
+.sig{display:grid;gap:36px;margin-top:56px}
+.sg{display:grid;grid-template-columns:1.1fr 1fr;border-radius:32px;overflow:hidden;background:var(--card);border:1px solid var(--line);transition:.4s}
+.sg:nth-child(even){grid-template-columns:1fr 1.1fr}.sg:nth-child(even) .art{order:2}
+.sg:hover{box-shadow:0 30px 70px rgba(0,0,0,.55)}
+.sg .art{min-height:340px;--s:9rem}
+.sg .bd{padding:clamp(28px,5vw,60px);display:flex;flex-direction:column;justify-content:center;gap:12px}
+.sg h3{font-size:2.3rem}.sg p{color:var(--mute);margin:0}
+.stars{color:var(--gold);letter-spacing:3px}.stars small{color:var(--mute);letter-spacing:0;margin-left:8px}
+.sg .price{font-size:1.9rem}
+/* gallery */
+#gallery{background:var(--bg2)}
+.gal{display:grid;grid-template-columns:repeat(4,1fr);grid-auto-rows:210px;gap:16px;margin-top:50px}
+.gal button{all:unset;cursor:zoom-in;border-radius:22px;overflow:hidden;position:relative}
+.gal button:focus-visible{outline:2px solid var(--gold2)}
+.gal .art{width:100%;height:100%;--s:5rem}
+.gal .w{grid-column:span 2}.gal .t{grid-row:span 2}
+.gal figcaption,.cap{position:absolute;left:0;right:0;bottom:0;padding:34px 18px 14px;background:linear-gradient(transparent,rgba(0,0,0,.75));opacity:0;transform:translateY(10px);transition:.4s;font-size:.85rem;text-align:left}
+.gal button:hover .cap,.gal button:focus-visible .cap{opacity:1;transform:none}
+.gal button:hover .art i{transform:scale(1.15)}
+.lb{position:fixed;inset:0;z-index:90;background:rgba(5,3,2,.92);backdrop-filter:blur(10px);display:none;place-items:center;padding:24px}
+.lb.open{display:grid;animation:rise .3s forwards}
+.lb .art{width:min(92vw,760px);aspect-ratio:4/3;border-radius:24px;--s:12rem}
+.lb p{text-align:center;color:var(--mute);margin:16px 0 0}
+.lb .x,.lb .nv{position:absolute;background:rgba(255,255,255,.08);border:1px solid var(--line);color:var(--cream);width:48px;height:48px;border-radius:50%;cursor:pointer;font-size:1.3rem}
+.lb .x{top:calc(20px + env(safe-area-inset-top,0px));right:20px}.lb .pv{left:16px;top:50%}.lb .nx{right:16px;top:50%}
+/* forms */
+.split{display:grid;grid-template-columns:1fr 1.15fr;gap:60px;align-items:start}
+.glass{padding:clamp(24px,4vw,44px);border-radius:28px;background:rgba(255,255,255,.04);border:1px solid var(--line);backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);box-shadow:0 30px 60px rgba(0,0,0,.4)}
+.f{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+.f .full{grid-column:1/-1}
+label{display:block;font-size:.8rem;color:var(--mute);margin-bottom:6px;letter-spacing:.05em}
+input,select,textarea{width:100%;padding:13px 16px;border-radius:14px;border:1px solid var(--line);background:rgba(0,0,0,.35);color:var(--cream);font:inherit;transition:.3s;color-scheme:dark}
+input:focus,select:focus,textarea:focus{outline:none;border-color:var(--gold);box-shadow:0 0 0 3px rgba(212,166,85,.18)}
+textarea{min-height:110px;resize:vertical}
+.err{color:#ff9d8a;font-size:.78rem;min-height:1.2em;display:block;margin-top:4px}
+[aria-invalid=true]{border-color:#ff7a62}
+.ok{display:none;padding:18px;border-radius:16px;background:rgba(120,190,120,.12);border:1px solid rgba(120,190,120,.4);margin-top:18px}
+.ok.show{display:block;animation:rise .5s forwards}
+.perks{list-style:none;padding:0;margin:28px 0 0;display:grid;gap:14px;color:var(--mute)}.perks li::before{content:"✦";color:var(--gold);margin-right:12px}
+/* contact */
+#contact{background:var(--bg2)}
+.info{display:grid;grid-template-columns:repeat(2,1fr);gap:18px;margin:44px 0 36px}
+.info div{padding:24px;border-radius:22px;background:var(--card);border:1px solid var(--line)}
+.info b{display:block;font:600 1.25rem var(--serif);color:var(--gold2);margin-bottom:4px}.info span{color:var(--mute);font-size:.92rem}
+.map{height:240px;border-radius:24px;border:1px solid var(--line);position:relative;overflow:hidden;background:linear-gradient(#1b1510,#120d09)}
+.map svg{position:absolute;inset:0;width:100%;height:100%}
+.map span{position:absolute;left:50%;top:50%;translate:-50% -50%;text-align:center;font-size:.85rem;color:var(--mute)}.map span b{display:block;font-size:2rem}
+.soc{display:flex;gap:12px}.soc a{width:44px;height:44px;border-radius:50%;border:1px solid var(--line);display:grid;place-items:center;transition:.3s}
+.soc a:hover{background:var(--gold);color:#1a1108;transform:translateY(-3px)}
+.soc svg{width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:1.8}
+/* footer */
+footer{padding:70px 0 30px;border-top:1px solid var(--line)}
+.fg{display:grid;grid-template-columns:1.5fr 1fr 1fr 1.2fr;gap:40px}
+footer h4{font:600 1.15rem var(--serif);color:var(--gold2);margin:0 0 14px}
+footer p,footer li,footer a{color:var(--mute);font-size:.9rem}footer ul{list-style:none;padding:0;margin:0;display:grid;gap:8px}footer a:hover{color:var(--gold)}
+.copy{margin-top:50px;padding-top:24px;border-top:1px solid var(--line);text-align:center;font-size:.82rem;color:var(--mute)}
+@media(max-width:960px){
+section{padding:80px 0}
+.about,.split,.sg,.sg:nth-child(even){grid-template-columns:1fr}.sg:nth-child(even) .art{order:0}
+.grid{grid-template-columns:repeat(2,1fr)}.gal{grid-template-columns:repeat(2,1fr)}.fg{grid-template-columns:1fr 1fr}
+.burger{display:block}
+.links{position:fixed;inset:0 0 0 auto;width:min(80vw,320px);flex-direction:column;justify-content:center;gap:26px;background:rgba(12,9,7,.96);backdrop-filter:blur(20px);transform:translateX(100%);transition:.45s;border-left:1px solid var(--line);padding-top:env(safe-area-inset-top,0px)}
+.links.open{transform:none}.links a{font-size:1.2rem}
+.burger{position:relative;z-index:60}
+.chef{right:12px}
+}
+@media(max-width:600px){.grid,.info,.f,.fg{grid-template-columns:1fr}.gal{grid-auto-rows:170px}.stats{gap:10px}.stat b{font-size:1.8rem}}
+@media(prefers-reduced-motion:reduce){*{animation-duration:.01ms!important;transition-duration:.01ms!important;scroll-behavior:auto!important}}
+</style>
+</head>
+<body>
+<div id="loader" aria-hidden="true"><span>SPICE &amp; SOUL</span></div>
+
+<nav id="nav">
+ <div class="wrap">
+  <a href="#home" class="logo" aria-label="Spice and Soul home">Spice <b>&amp;</b> Soul</a>
+  <button class="burger" id="burger" aria-label="Open menu" aria-expanded="false" aria-controls="links">☰</button>
+  <div class="links" id="links">
+   <a href="#home">Home</a><a href="#menu">Menu</a><a href="#about">About Us</a><a href="#gallery">Gallery</a><a href="#contact">Contact</a>
+   <a href="#reserve" class="btn pri" style="padding:10px 22px;color:#1a1108">Reservations</a>
+  </div>
+ </div>
+</nav>
+
+<main>
+<header class="hero" id="home">
+ <div class="orb" data-p=".12" style="width:420px;height:420px;background:#b4561a;left:-120px;top:10%"></div>
+ <div class="orb" data-p="-.08" style="width:340px;height:340px;background:#d4a655;right:-80px;top:35%"></div>
+ <div class="wrap">
+  <div class="eyebrow rise" style="animation-delay:.9s">Fine Indian Dining · Est. 2011</div>
+  <h1 class="rise" style="animation-delay:1.05s">Taste the Tradition. <em>Experience the Soul.</em></h1>
+  <p class="rise" style="animation-delay:1.2s">Slow-simmered gravies, hand-ground spices and fire-kissed tandoor classics, plated with a modern hand and served in a candle-lit room made for lingering.</p>
+  <div class="cta rise" style="animation-delay:1.35s">
+   <a href="#reserve" class="btn pri">Reserve a Table</a>
+   <a href="#menu" class="btn ghost">Explore Menu</a>
+  </div>
+ </div>
+ <div class="scroll" aria-hidden="true"></div>
+</header>
+
+<section id="about"><div class="wrap about">
+ <div class="rv" style="position:relative">
+  <div class="art zoom" style="--g:linear-gradient(160deg,#3a1d0c,#a8591f 70%,#e0a24d)"><i>👨‍🍳</i></div>
+  <div class="chef"><b>Chef Arjun Menon</b>Executive Chef &amp; Founder</div>
+ </div>
+ <div class="rv">
+  <div class="eyebrow">Our Story</div>
+  <h2 class="title">A kitchen built on memory</h2>
+  <p class="lead">Spice &amp; Soul began in 2011 as a twelve-table dining room inspired by the Sunday kitchens of Chef Arjun's grandmother in Kerala. Today it remains a family-run restaurant where every masala is ground in-house and every plate is finished by hand.</p>
+  <div class="pillars">
+   <div><b>Fresh Ingredients</b><span>Vegetables and herbs from partner farms, seafood landed each morning, whole spices roasted daily.</span></div>
+   <div><b>Traditional Recipes</b><span>Heirloom techniques: dum-sealed biryanis, clay-oven breads and gravies cooked low for hours.</span></div>
+   <div><b>Modern Presentation</b><span>Contemporary plating and a considered wine, mocktail and chai pairing for every course.</span></div>
+  </div>
+  <div class="stats">
+   <div class="stat"><b data-n="15">0</b><b>+</b><span>Years of Experience</span></div>
+   <div class="stat"><b data-n="50">0</b><b>+</b><span>Signature Dishes</span></div>
+   <div class="stat"><b data-n="10">0</b><b>K+</b><span>Happy Customers</span></div>
+  </div>
+ </div>
+</div></section>
+
+<section id="menu"><div class="wrap">
+ <div class="center rv"><div class="eyebrow">The Menu</div><h2 class="title">Crafted with fire &amp; patience</h2><p class="lead">From tandoor starters to dum biryanis and slow-set desserts, explore the dishes our regulars return for.</p></div>
+ <div class="tabs" id="tabs" role="group" aria-label="Menu categories"></div>
+ <div class="grid" id="mgrid" aria-live="polite"></div>
+ <div class="more"><button class="btn ghost" id="more">View Full Menu</button></div>
+</div></section>
+
+<section id="signature"><div class="wrap">
+ <div class="center rv"><div class="eyebrow">Chef's Signatures</div><h2 class="title">Dishes worth the journey</h2><p class="lead">Three plates that have defined Spice &amp; Soul since our first night.</p></div>
+ <div class="sig" id="sig"></div>
+</div></section>
+
+<section id="gallery"><div class="wrap">
+ <div class="center rv"><div class="eyebrow">Gallery</div><h2 class="title">A feast for the eyes</h2><p class="lead">Food, room, chef and the moments between courses. Select any frame to enlarge it.</p></div>
+ <div class="gal rv" id="gal"></div>
+</div></section>
+
+<section id="reserve"><div class="wrap split">
+ <div class="rv">
+  <div class="eyebrow">Reservations</div><h2 class="title">Reserve your evening</h2>
+  <p class="lead">Book a table for an intimate dinner, a family celebration or a private tasting. We confirm every request by email within two hours.</p>
+  <ul class="perks"><li>Chef's tasting menu on Fridays and Saturdays</li><li>Private dining room for up to 18 guests</li><li>Complimentary welcome drink for celebrations</li></ul>
+ </div>
+ <form class="glass rv" id="rform" novalidate>
+  <div class="f">
+   <div><label for="rn">Full name</label><input id="rn" name="name" autocomplete="name" required><span class="err"></span></div>
+   <div><label for="re">Email</label><input id="re" name="email" type="email" autocomplete="email" required><span class="err"></span></div>
+   <div><label for="rp">Phone</label><input id="rp" name="phone" type="tel" autocomplete="tel" placeholder="+91 98765 43210" required><span class="err"></span></div>
+   <div><label for="rg">Guests</label><select id="rg" name="guests" required></select><span class="err"></span></div>
+   <div><label for="rd">Date</label><input id="rd" name="date" type="date" required><span class="err"></span></div>
+   <div><label for="rt">Time</label><select id="rt" name="time" required></select><span class="err"></span></div>
+   <div class="full"><label for="rs">Special requests</label><textarea id="rs" name="notes" placeholder="Allergies, celebrations, seating preferences"></textarea></div>
+   <div class="full"><button class="btn pri" style="width:100%" type="submit">Book a Table</button></div>
+  </div>
+  <div class="ok" id="rok" role="status"></div>
+ </form>
+</div></section>
+
+<section id="contact"><div class="wrap split">
+ <div class="rv">
+  <div class="eyebrow">Contact</div><h2 class="title">Visit us, or say hello</h2>
+  <div class="info">
+   <div><b>Address</b><span>24 Temple Road, Anna Nagar<br>Tiruppur, Tamil Nadu 641601</span></div>
+   <div><b>Phone</b><span><a href="tel:+914212345678">+91 421 234 5678</a></span></div>
+   <div><b>Email</b><span><a href="mailto:hello@spiceandsoul.in">hello@spiceandsoul.in</a></span></div>
+   <div><b>Opening Hours</b><span>Mon–Fri · 12:00–15:00, 18:30–23:00<br>Sat–Sun · 12:00–23:30</span></div>
+  </div>
+  <div class="map" role="img" aria-label="Map showing the restaurant location">
+   <svg viewBox="0 0 400 240" preserveAspectRatio="xMidYMid slice"><g stroke="#3a2b1c" stroke-width="2" fill="none"><path d="M0 60h400M0 130h400M0 190h400M80 0v240M200 0v240M310 0v240"/><path d="M0 200L400 40" stroke="#d4a655" stroke-opacity=".35" stroke-width="5"/></g></svg>
+   <span><b>📍</b>Spice &amp; Soul<br>Interactive map available on request</span>
+  </div>
+  <div class="soc" style="margin-top:24px">
+   <a href="https://instagram.com" aria-label="Instagram" target="_blank" rel="noopener"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r=".8"/></svg></a>
+   <a href="https://facebook.com" aria-label="Facebook" target="_blank" rel="noopener"><svg viewBox="0 0 24 24"><path d="M14 8h3V4h-3a4 4 0 00-4 4v3H7v4h3v6h4v-6h3l1-4h-4V8z"/></svg></a>
+   <a href="https://x.com" aria-label="X" target="_blank" rel="noopener"><svg viewBox="0 0 24 24"><path d="M4 4l16 16M20 4L4 20"/></svg></a>
+   <a href="https://youtube.com" aria-label="YouTube" target="_blank" rel="noopener"><svg viewBox="0 0 24 24"><rect x="2.5" y="5.5" width="19" height="13" rx="4"/><path d="M10 9.5l5 2.5-5 2.5z"/></svg></a>
+  </div>
+ </div>
+ <form class="glass rv" id="cform" novalidate>
+  <div class="f">
+   <div><label for="cn">Name</label><input id="cn" autocomplete="name" required><span class="err"></span></div>
+   <div><label for="ce">Email</label><input id="ce" type="email" autocomplete="email" required><span class="err"></span></div>
+   <div class="full"><label for="cm">Message</label><textarea id="cm" required style="min-height:170px"></textarea><span class="err"></span></div>
+   <div class="full"><button class="btn pri" style="width:100%" type="submit">Send Message</button></div>
+  </div>
+  <div class="ok" id="cok" role="status"></div>
+ </form>
+</div></section>
+</main>
+
+<footer><div class="wrap">
+ <div class="fg">
+  <div><a href="#home" class="logo">Spice <b>&amp;</b> Soul</a><p style="margin-top:12px;max-width:280px">Modern Indian dining rooted in heirloom recipes, honest ingredients and generous hospitality.</p></div>
+  <div><h4>Quick Links</h4><ul><li><a href="#menu">Menu</a></li><li><a href="#about">About Us</a></li><li><a href="#gallery">Gallery</a></li><li><a href="#reserve">Reservations</a></li><li><a href="#contact">Contact</a></li></ul></div>
+  <div><h4>Opening Hours</h4><ul><li>Mon–Fri: 12–3 pm, 6:30–11 pm</li><li>Sat–Sun: 12 pm–11:30 pm</li></ul></div>
+  <div><h4>Contact</h4><ul><li>24 Temple Road, Anna Nagar, Tiruppur</li><li><a href="tel:+914212345678">+91 421 234 5678</a></li><li><a href="mailto:hello@spiceandsoul.in">hello@spiceandsoul.in</a></li></ul></div>
+ </div>
+ <div class="copy">© 2026 Spice &amp; Soul. All rights reserved.</div>
+</div></footer>
+
+<div class="lb" id="lb" role="dialog" aria-modal="true" aria-label="Image preview">
+ <button class="x" id="lx" aria-label="Close">✕</button><button class="nv pv" id="lp" aria-label="Previous">‹</button><button class="nv nx" id="ln" aria-label="Next">›</button>
+ <div><div class="art" id="lart"><i></i></div><p id="lcap"></p></div>
+</div>
+
+<script>
+const $=(s,r=document)=>r.querySelector(s),$$=(s,r=document)=>[...r.querySelectorAll(s)];
+const G=(a,b)=>`linear-gradient(150deg,${a},${b})`;
+const MENU=[
+{c:'Starters',n:'Tandoori Prawns',d:'Jumbo prawns marinated in saffron yoghurt and carom, charred in the clay oven.',p:720,e:'🍤',g:G('#4a1a0c','#e0743a')},
+{c:'Starters',n:'Paneer Tikka Royale',d:'Smoked cottage cheese, bell peppers and mint chutney with pickled onion.',p:480,e:'🧀',g:G('#3b2a0a','#d9a43a')},
+{c:'Main Course',n:'Chettinad Lamb Shank',d:'Slow-braised for six hours in black stone flower and fresh-roasted peppercorn masala.',p:980,e:'🍖',g:G('#3a130a','#a8431f')},
+{c:'Main Course',n:'Malabar Fish Curry',d:'Seer fish in a coconut and raw mango gravy, finished with curry leaf oil.',p:760,e:'🐟',g:G('#102a33','#2f7f8c')},
+{c:'Biryanis',n:'Dum Hyderabadi Biryani',d:'Aged basmati and tender mutton sealed under dough and cooked on dum, with mirchi ka salan.',p:690,e:'🍚',g:G('#3d2208','#c9892f')},
+{c:'Biryanis',n:'Garden Vegetable Biryani',d:'Seasonal vegetables, fried onion and saffron milk layered with long-grain rice.',p:520,e:'🥘',g:G('#2a3310','#8aa23a')},
+{c:'Indian Specialties',n:'Butter Chicken Makhani',d:'Tandoor-roasted chicken in a velvety tomato-butter gravy, served with garlic naan.',p:640,e:'🍛',g:G('#4a1608','#d9602a')},
+{c:'Indian Specialties',n:'Dal Bukhara',d:'Black lentils simmered overnight with cream and butter, the house classic.',p:420,e:'🥣',g:G('#2b1a0e','#7d5230')},
+{c:'Desserts',n:'Gulab Jamun Brûlée',d:'Warm milk dumplings in rose syrup with a caramelised crust and cardamom cream.',p:340,e:'🍮',g:G('#4a1a22','#c9506a')},
+{c:'Desserts',n:'Saffron Kulfi',d:'Slow-reduced milk kulfi with pistachio and a thread of Kashmiri saffron.',p:320,e:'🍨',g:G('#3d2f0a','#e6c15a')},
+{c:'Beverages',n:'Masala Chai Service',d:'Assam leaf brewed with ginger, cardamom and clove, served in a copper pot.',p:220,e:'🍵',g:G('#3a2210','#a8743a')},
+{c:'Beverages',n:'Rose Cardamom Lassi',d:'Chilled thick yoghurt lassi with rose petal and crushed cardamom.',p:260,e:'🥛',g:G('#4a2030','#d88aa0')}];
+const CATS=['All',...new Set(MENU.map(m=>m.c))];
+let cat='All',full=false;
+const tabs=$('#tabs'),mg=$('#mgrid'),more=$('#more');
+tabs.innerHTML=CATS.map(c=>`<button class="tab" aria-pressed="${c==='All'}" data-c="${c}">${c}</button>`).join('');
+function renderMenu(){
+ let list=MENU.filter(m=>cat==='All'||m.c===cat);
+ if(cat==='All'&&!full)list=list.filter((_,i)=>i%2===0);
+ mg.innerHTML=list.map((m,i)=>`<article class="card zoom" style="animation-delay:${i*60}ms"><div class="art" style="--g:${m.g}"><i>${m.e}</i></div><div class="bd"><span class="cat">${m.c}</span><div class="row"><h3>${m.n}</h3><span class="price">₹${m.p}</span></div><p>${m.d}</p></div></article>`).join('');
+ more.parentElement.style.display=cat==='All'&&!full?'':'none';
+}
+tabs.onclick=e=>{const b=e.target.closest('.tab');if(!b)return;cat=b.dataset.c;$$('.tab').forEach(t=>t.setAttribute('aria-pressed',t===b));renderMenu()};
+more.onclick=()=>{full=true;renderMenu()};
+renderMenu();
+
+const SIG=[
+{n:'Dum Hyderabadi Biryani',d:'Our most-ordered dish: 24-hour marinated mutton, aged basmati and saffron, sealed and cooked slowly so the aromas are released only at your table.',p:690,e:'🍚',g:G('#3d2208','#e0a24d'),r:'4.9',v:812},
+{n:'Chettinad Lamb Shank',d:'A showpiece from Tamil Nadu: fall-off-the-bone lamb in a deeply fragrant roasted masala, with ghee rice and a crisp appalam.',p:980,e:'🍖',g:G('#3a130a','#c0522a'),r:'4.9',v:604},
+{n:'Tandoori Prawns',d:'Jumbo tiger prawns in saffron-carom marinade, flashed in a 480°C tandoor for a smoky char and juicy centre.',p:720,e:'🍤',g:G('#4a1a0c','#f0894a'),r:'4.8',v:557}];
+$('#sig').innerHTML=SIG.map(s=>`<article class="sg zoom rv"><div class="art" style="--g:${s.g}"><i>${s.e}</i></div><div class="bd"><span class="eyebrow">Signature</span><h3>${s.n}</h3><div class="stars" aria-label="Rated ${s.r} out of 5">★★★★★<small>${s.r} · ${s.v} reviews</small></div><p>${s.d}</p><span class="price">₹${s.p}</span><div><a class="btn ghost" href="#reserve">Reserve to Taste</a></div></div></article>`).join('');
+
+const GAL=[
+['Food','Saffron biryani, plated','🍚',G('#3d2208','#e0a24d'),'w'],['Interior','The main dining room','🕯️',G('#1f1208','#7a4a1e'),''],['Chef','Chef Arjun at the pass','👨‍🍳',G('#2b1608','#b0682a'),'t'],
+['Food','Charred tandoori prawns','🍤',G('#4a1a0c','#e0743a'),''],['Dining','An evening toast','🥂',G('#2a1a2e','#a0607a'),''],['Interior','The chef\'s table','🍽️',G('#1c1510','#5c3d22'),'w'],
+['Dining','Sharing a thali','🍛',G('#4a1608','#d9602a'),''],['Food','Gulab jamun brûlée','🍮',G('#4a1a22','#c9506a'),''],['Chef','Hand-rolled naan','🫓',G('#3a2a10','#c9a05a'),'']];
+$('#gal').innerHTML=GAL.map((g,i)=>`<button class="${g[4]}" data-i="${i}" aria-label="Open ${g[1]}"><div class="art" style="--g:${g[3]}"><i>${g[2]}</i></div><div class="cap">${g[0]} · ${g[1]}</div></button>`).join('');
+const lb=$('#lb');let li=0,lastFocus;
+function show(i){li=(i+GAL.length)%GAL.length;const g=GAL[li];$('#lart').style.setProperty('--g',g[3]);$('#lart i').textContent=g[2];$('#lcap').textContent=g[0]+' · '+g[1]}
+$('#gal').onclick=e=>{const b=e.target.closest('button');if(!b)return;lastFocus=b;show(+b.dataset.i);lb.classList.add('open');$('#lx').focus()};
+const close=()=>{lb.classList.remove('open');lastFocus&&lastFocus.focus()};
+$('#lx').onclick=close;$('#lp').onclick=()=>show(li-1);$('#ln').onclick=()=>show(li+1);
+lb.onclick=e=>{if(e.target===lb)close()};
+addEventListener('keydown',e=>{if(!lb.classList.contains('open'))return;if(e.key==='Escape')close();if(e.key==='ArrowLeft')show(li-1);if(e.key==='ArrowRight')show(li+1)});
+
+// form setup
+$('#rg').innerHTML='<option value="">Select</option>'+Array.from({length:12},(_,i)=>`<option>${i+1} ${i?'guests':'guest'}</option>`).join('')+'<option>13+ (private dining)</option>';
+const slots=[];for(let h=12;h<=14;h++)['00','30'].forEach(m=>slots.push(`${h}:${m} PM`));for(let h=6;h<=10;h++)['00','30'].forEach(m=>slots.push(`${h}:${m} PM`));
+$('#rt').innerHTML='<option value="">Select</option>'+slots.map(s=>`<option>${s}</option>`).join('');
+const today=new Date(Date.now()-new Date().getTimezoneOffset()*6e4).toISOString().slice(0,10);$('#rd').min=today;
+function handle(form,okEl,rules,msg){
+ form.addEventListener('submit',e=>{
+  e.preventDefault();let bad=null;
+  $$('[required]',form).forEach(inp=>{
+   const er=inp.parentElement.querySelector('.err'),m=rules[inp.id](inp.value.trim());
+   er.textContent=m||'';m?(inp.setAttribute('aria-invalid','true'),bad=bad||inp):inp.removeAttribute('aria-invalid');
+   if(m)inp.setAttribute('aria-describedby','');
+  });
+  if(bad)return bad.focus();
+  const btn=$('button[type=submit]',form),t=btn.textContent;btn.disabled=true;btn.textContent='Sending…';
+  setTimeout(()=>{btn.disabled=false;btn.textContent=t;okEl.innerHTML=msg(form);okEl.classList.add('show');form.reset()},1100);
+ });
+ form.addEventListener('input',e=>{if(e.target.hasAttribute('aria-invalid')){e.target.removeAttribute('aria-invalid');e.target.parentElement.querySelector('.err').textContent=''}okEl.classList.remove('show')});
+}
+const req=v=>v?'':'This field is required.',email=v=>!v?'Email is required.':/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v)?'':'Enter a valid email address.';
+handle($('#rform'),$('#rok'),{
+ rn:v=>v.length<2?'Please enter your full name.':'',re:email,
+ rp:v=>/^\+?[\d\s-]{8,15}$/.test(v)?'':'Enter a valid phone number.',
+ rg:req,rt:req,rd:v=>!v?'Choose a date.':v<today?'Date cannot be in the past.':''},
+ f=>`<b>Thank you, ${$('#rn').value||'guest'}.</b> Your request for ${$('#rg').value||'your party'} on ${$('#rd').value||'your date'} is received. A confirmation will reach your inbox within two hours.`);
+handle($('#cform'),$('#cok'),{cn:v=>v.length<2?'Please enter your name.':'',ce:email,cm:v=>v.length<10?'Please write at least 10 characters.':''},()=>'<b>Message sent.</b> Thank you for reaching out, our team will reply within one working day.');
+
+// nav, reveal, counters, parallax
+const nav=$('#nav'),links=$('#links'),burger=$('#burger'),orbs=$$('.orb');
+const secs=$$('main > section, main > header');
+addEventListener('scroll',()=>{
+ nav.classList.toggle('solid',scrollY>40);
+ if(matchMedia('(prefers-reduced-motion:no-preference)').matches)orbs.forEach(o=>o.style.transform=`translateY(${scrollY*o.dataset.p}px)`);
+ let cur='home';secs.forEach(s=>{if(s.getBoundingClientRect().top<innerHeight*.4)cur=s.id});
+ $$('.links a:not(.btn)').forEach(a=>a.classList.toggle('on',a.getAttribute('href')==='#'+(cur==='signature'?'menu':cur==='reserve'?'':cur)));
+},{passive:true});
+const setMenu=o=>{links.classList.toggle('open',o);burger.setAttribute('aria-expanded',o);burger.textContent=o?'✕':'☰'};
+burger.onclick=()=>setMenu(!links.classList.contains('open'));
+links.onclick=e=>{if(e.target.closest('a'))setMenu(false)};
+const io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');
+ $$('[data-n]',e.target).forEach(c=>{const n=+c.dataset.n;let i=0;const t=setInterval(()=>{i+=Math.max(1,Math.ceil(n/30));if(i>=n){i=n;clearInterval(t)}c.textContent=i},35)});io.unobserve(e.target)}}),{threshold:.15});
+$$('.rv').forEach(el=>io.observe(el));
+addEventListener('load',()=>setTimeout(()=>$('#loader').classList.add('done'),600));
+</script>
+</body>
+</html>
